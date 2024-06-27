@@ -40,7 +40,7 @@ def get_dog_info_by_id(connection, dog_id):
         cursor.execute(query)
         result = cursor.fetchall()
         print("Query executed successfully")
-        print(result)
+        cursor.close()
         return result
     except Error as e:
         print(f"The error '{e}' occurred")
@@ -84,7 +84,7 @@ def get_dog_info_by_breed_lifecycle_stage(connection, dog_id, dog_lifecycle_stag
         cursor.execute(query, (dog_id, dog_lifecycle_stages_id))
         result = cursor.fetchall()
         print("Query executed successfully")
-        print(result)
+        # print(result)
         if result:
             (label, lifecycle_state, health_info) = result[0]
             result = [{"name" : label,
