@@ -1,4 +1,4 @@
-name: boomung2
+name: boomung_ai
 channels:
   - anaconda
   - conda-forge
@@ -75,7 +75,6 @@ dependencies:
   - libedit=3.1.20191231
   - libev=4.33
   - libffi=3.4.4
-  - libgfortran=5.0.0
   - libgfortran5=13.2.0
   - libgrpc=1.59.3
   - libjpeg-turbo=3.0.0

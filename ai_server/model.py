@@ -2,8 +2,8 @@ import csv
 import tensorflow as tf
 from tensorflow.keras.applications.vgg16 import preprocess_input #type: ignore
 
-model_info = {"model_path":"ai_server/dog_breed_model/model_full_dataset_240618_1919_E100.keras", 
-              "label_path":"ai_server/dog_breed_model/labels.csv"}
+model_info = {"model_path":"/home/ec2-user/CloudAiProject_team1_AI/ai_server/dog_breed_model/model_full_dataset_240618_1919_E100.keras", 
+              "label_path":"/home/ec2-user/CloudAiProject_team1_AI/ai_server/dog_breed_model/labels.csv"}
 
 # 커스텀 layer CustomDataAugmentation 정의
 class CustomDataAugmentation(tf.keras.layers.Layer):
