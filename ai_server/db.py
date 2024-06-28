@@ -86,7 +86,16 @@ def get_dog_info_by_breed_lifecycle_stage(connection, dog_id, dog_lifecycle_stag
         print("Query executed successfully")
         # print(result)
         if result:
-            (label, lifecycle_state, health_info) = result[0]
+            (label, lifecycle_state, health_info_text) = result[0]
+            health_info_list = health_info_text.strip().split('\n\n')
+            health_info = []
+            for item in health_info_list:
+                lines = item.split('\n')
+                item = {}
+                for line in lines:
+                    key, value = line.split(':')
+                    item[key]=value
+                health_info.append(item)
             result = [{"name" : label,
                     "lifecycle_state": lifecycle_state,
                     "health_info": health_info}]

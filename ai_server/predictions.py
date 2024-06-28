@@ -17,7 +17,12 @@ def filtered_predictions(connection, predictions, threshold = 0.01):
         score = round(prediction_item["score"]* 100, 0)  # 계산을 위해 숫자 형식으로 남김 (float)
         # get information by dog_id
         dog_data = get_dog_info_by_id(connection, dog_id)
-        (dog_id, label, height, weight, description, general_info, training_info, friend_info) = dog_data[0]
+        (dog_id, label, height, weight, description, general_info, training_info, friend_info_text) = dog_data[0]
+        friend_info_list = friend_info_text.strip().split('\n')
+        friend_info = []
+        for line in friend_info_list:
+            name, value = line.split(':')
+            friend_info.append({"name": name, "value":value})
         result[f"class_{dog_id}"] = [{"dog_id": dog_id,
                                       "name" : label,
                                       "value" : score,
