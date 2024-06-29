@@ -3,6 +3,8 @@ from PIL import Image, UnidentifiedImageError
 import numpy as np
 from keras.preprocessing import image
 import tensorflow as tf
+import torch
+import cv2
 import requests
 from flask import abort
 
@@ -38,6 +40,34 @@ def verify_image(image_url):
         error_message = f"Unexpected error: {e}"
         print(error_message)
         abort(500, description=error_message)
+
+# 강아지 탐지용 욜로 모델
+yolo_path = '/home/ec2-user/CloudAiProject_team1_AI/ai_server/dog_breed_model/yolov5s.pt'
+yolo_model = torch.hub.load('ultralytics/yolov5', 'custom', path=yolo_path, force_reload=True)
+
+# 사진에 강아지가 없는 경우 커스텀 에러
+class NoDogDetectedException(Exception):
+    pass
+def crop_largest_dog_from_img(img):
+    results = yolo_model(img)
+    df = results.pandas().xyxy[0]
+    dog_detections = df[df['name'] == 'dog']
+    if dog_detections.empty:
+        raise NoDogDetectedException("No dogs detected")
+    largest_area = 0
+    largest_dog = None
+    for index, row in dog_detections.iterrows():
+        xmin, ymin, xmax, ymax = int(row['xmin']), int(row['ymin']), int(row['xmax']), int(row['ymax'])
+        area = (xmax - xmin) * (ymax - ymin)
+        if area > largest_area:
+            largest_area = area
+            largest_dog = (xmin, ymin, xmax, ymax)
+    if largest_dog:
+        xmin, ymin, xmax, ymax = largest_dog
+        cropped_img = img.crop((xmin, ymin, xmax, ymax))
+        return cropped_img
+    else:
+        raise NoDogDetectedException("No dogs detected")
 
 def preprocess_image(img):
     img = img.resize((224, 224))  # 이미지 로드 및 크기 조정

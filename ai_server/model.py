@@ -6,7 +6,7 @@ model_info = {"model_path":"/home/ec2-user/CloudAiProject_team1_AI/ai_server/dog
               "label_path":"/home/ec2-user/CloudAiProject_team1_AI/ai_server/dog_breed_model/labels.csv"}
 
 # 커스텀 layer CustomDataAugmentation 정의
-class CustomDataAugmentation(tf.keras.layers.Layer):
+class CustomDataAugmentation(tf.keraslayers.Layer):
     def __init__(self, **kwargs):
         super(CustomDataAugmentation, self).__init__(**kwargs)
         self.flip = tf.keras.layers.RandomFlip('horizontal')
