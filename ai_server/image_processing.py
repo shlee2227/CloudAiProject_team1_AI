@@ -1,3 +1,4 @@
+import os
 from io import BytesIO
 from PIL import Image, UnidentifiedImageError
 import numpy as np
@@ -7,6 +8,8 @@ import torch
 import cv2
 import requests
 from flask import abort
+from dotenv import load_dotenv
+load_dotenv()
 
 def verify_image(image_url):
     if not image_url:
@@ -42,8 +45,7 @@ def verify_image(image_url):
         abort(500, description=error_message)
 
 # 강아지 탐지용 욜로 모델
-yolo_path = '/home/ec2-user/CloudAiProject_team1_AI/ai_server/dog_breed_model/yolov5s.pt'
-yolo_path = 'ai_server/dog_breed_model/yolov5s.pt'
+yolo_path = os.getenv('YOLO_PATH')
 yolo_model = torch.hub.load('ultralytics/yolov5', 'custom', path=yolo_path, force_reload=True)
 
 # 사진에 강아지가 없는 경우 커스텀 에러
