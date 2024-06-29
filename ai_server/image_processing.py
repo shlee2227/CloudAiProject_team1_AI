@@ -43,6 +43,7 @@ def verify_image(image_url):
 
 # 강아지 탐지용 욜로 모델
 yolo_path = '/home/ec2-user/CloudAiProject_team1_AI/ai_server/dog_breed_model/yolov5s.pt'
+yolo_path = 'ai_server/dog_breed_model/yolov5s.pt'
 yolo_model = torch.hub.load('ultralytics/yolov5', 'custom', path=yolo_path, force_reload=True)
 
 # 사진에 강아지가 없는 경우 커스텀 에러
