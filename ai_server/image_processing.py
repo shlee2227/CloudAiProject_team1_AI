@@ -76,5 +76,6 @@ def preprocess_image(img):
     img = img.resize((224, 224))  # 이미지 로드 및 크기 조정
     img_array = image.img_to_array(img)  # 이미지를 numpy 배열로 변환
     img_array = np.expand_dims(img_array, axis=0)  # 배치 차원 추가
+    img_array = img_array[:, :, :, :3]
     img_array = tf.keras.applications.vgg16.preprocess_input(img_array)  # 모델에 맞게 전처리
     return img_array
