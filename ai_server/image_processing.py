@@ -48,15 +48,13 @@ def verify_image(image_url):
 yolo_path = os.getenv('YOLO_PATH')
 yolo_model = torch.hub.load('ultralytics/yolov5', 'custom', path=yolo_path, force_reload=True)
 
-# 사진에 강아지가 없는 경우 커스텀 에러
-class NoDogDetectedException(Exception):
-    pass
 def crop_largest_dog_from_img(img):
     results = yolo_model(img)
     df = results.pandas().xyxy[0]
     dog_detections = df[df['name'] == 'dog']
     if dog_detections.empty:
-        raise NoDogDetectedException("No dogs detected")
+        print('no dog detected')
+        return img
     largest_area = 0
     largest_dog = None
     for index, row in dog_detections.iterrows():
@@ -70,7 +68,8 @@ def crop_largest_dog_from_img(img):
         cropped_img = img.crop((xmin, ymin, xmax, ymax))
         return cropped_img
     else:
-        raise NoDogDetectedException("No dogs detected")
+        return img
+        
 
 def preprocess_image(img):
     img = img.resize((224, 224))  # 이미지 로드 및 크기 조정
